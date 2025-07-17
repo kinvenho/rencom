@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException, Query, Depends, Header, Body
+from fastapi import APIRouter, HTTPException, Query, Depends, Header, Body, Request
 from fastapi.responses import JSONResponse
 from typing import Optional
 from datetime import datetime
 import secrets
-import asyncpg
+import structlog
+from extensions import limiter, audit_logger
 
 from models.review import (
     ReviewSubmission,
@@ -25,17 +26,40 @@ async def require_api_token(authorization: Optional[str] = Header(None)):
     return token
 
 @router.post("/tokens", response_model=APIToken)
-async def create_api_token(name: str = Body(..., embed=True)):
-    token = secrets.token_urlsafe(32)
-    created = await supabase.create_token(token, name)
-    if not created:
-        raise HTTPException(status_code=500, detail="Failed to create API token")
-    return APIToken(token=created["token"], name=created.get("name"), created_at=created.get("created_at"))
+@limiter.limit("5/minute")
+async def create_api_token(request: Request, name: str = Body(..., embed=True)):
+    try:
+        token = secrets.token_urlsafe(32)
+        created = await supabase.create_token(token, name)
+        if not created:
+            audit_logger.info("create_token_failed", name=name)
+            return JSONResponse(
+                status_code=500,
+                content={
+                    "success": False,
+                    "error": "Failed to create API token",
+                    "status_code": 500
+                }
+            )
+        audit_logger.info("create_token", token=token, name=name)
+        return APIToken(token=created["token"], name=created.get("name"), created_at=created.get("created_at"))
+    except Exception as e:
+        audit_logger.error("create_token_error", name=name, error=str(e))
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": f"Failed to create API token: {str(e)}",
+                "status_code": 500
+            }
+        )
 
 @router.post("/reviews", response_model=dict, dependencies=[Depends(require_api_token)])
-async def submit_review(review: ReviewSubmission):
+@limiter.limit("30/minute")
+async def submit_review(request: Request, review: ReviewSubmission):
     try:
         created_review = await supabase.create_review(review.dict())
+        audit_logger.info("submit_review", user_id=review.user_id, product_id=review.product_id, rating=review.rating)
         return JSONResponse(
             status_code=201,
             content={
@@ -50,6 +74,7 @@ async def submit_review(review: ReviewSubmission):
         if hasattr(e, 'args') and e.args:
             err = e.args[0]
             if isinstance(err, dict) and err.get('code') == '23505':
+                audit_logger.warning("duplicate_review", user_id=review.user_id, product_id=review.product_id)
                 return JSONResponse(
                     status_code=409,
                     content={
@@ -59,6 +84,7 @@ async def submit_review(review: ReviewSubmission):
                     }
                 )
             if isinstance(err, str) and '23505' in err:
+                audit_logger.warning("duplicate_review", user_id=review.user_id, product_id=review.product_id)
                 return JSONResponse(
                     status_code=409,
                     content={
@@ -67,6 +93,7 @@ async def submit_review(review: ReviewSubmission):
                         "status_code": 409
                     }
                 )
+        audit_logger.error("submit_review_error", user_id=review.user_id, product_id=review.product_id, error=str(e))
         return JSONResponse(
             status_code=500,
             content={
@@ -86,7 +113,14 @@ async def get_product_reviews(
         result = await supabase.get_reviews(product_external_id, page, page_size)
         return ReviewListResponse(**result)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to get reviews: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": f"Failed to get reviews: {str(e)}",
+                "status_code": 500
+            }
+        )
 
 @router.get("/products/{product_external_id}/summary", response_model=ReviewSummary, dependencies=[Depends(require_api_token)])
 async def get_product_summary(product_external_id: str):
@@ -101,7 +135,34 @@ async def get_product_summary(product_external_id: str):
                 last_updated=datetime.utcnow()
             )
         return ReviewSummary(**summary)
-    except HTTPException:
-        raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch summary: {str(e)}") 
+        return JSONResponse(
+            status_code=500,
+            content={
+                "success": False,
+                "error": f"Failed to fetch summary: {str(e)}",
+                "status_code": 500
+            }
+        )
+
+@router.delete("/reviews/{review_id}", response_model=dict, dependencies=[Depends(require_api_token)])
+async def delete_review(review_id: str):
+    try:
+        deleted = await supabase.delete_review(review_id)
+        if not deleted:
+            audit_logger.info("delete_review_not_found", review_id=review_id)
+            return JSONResponse(
+                status_code=404,
+                content={"success": False, "error": "Review not found", "status_code": 404}
+            )
+        audit_logger.info("delete_review", review_id=review_id)
+        return JSONResponse(
+            status_code=200,
+            content={"success": True, "message": "Review deleted", "status_code": 200}
+        )
+    except Exception as e:
+        audit_logger.error("delete_review_error", review_id=review_id, error=str(e))
+        return JSONResponse(
+            status_code=500,
+            content={"success": False, "error": f"Failed to delete review: {str(e)}", "status_code": 500}
+        ) 

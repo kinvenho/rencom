@@ -117,4 +117,9 @@ class SupabaseService:
         result = await self.get_token(token)
         return result is not None
 
+    async def delete_review(self, review_id: str) -> bool:
+        result = self.client.table("reviews").delete().eq("id", review_id).execute()
+        # result.data is a list of deleted rows; if empty, nothing was deleted
+        return bool(result.data)
+
 supabase = SupabaseService() 
