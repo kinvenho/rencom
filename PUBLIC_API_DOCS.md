@@ -60,7 +60,19 @@ Welcome to the Rencom E-commerce Reviews API! This document provides all the ess
     {"success": false, "error": "Review not found", "status_code": 404}
     ```
 - `GET /api/v1/products/{product_id}/reviews` — Get paginated reviews for a product
-  - Query params: `page`, `page_size`
+  - Query params:
+    - `page`: Page number (default: 1)
+    - `page_size`: Reviews per page (default: 50, max: 100)
+    - `rating`: Filter by rating(s), comma-separated (e.g., `4,5`)
+    - `status`: Filter by review status (e.g., `approved`)
+    - `date_from`: Filter reviews created after this date (YYYY-MM-DD)
+    - `date_to`: Filter reviews created before this date (YYYY-MM-DD)
+    - `sort_by`: Sort by field: `created_at` or `rating` (default: `created_at`)
+    - `sort_order`: Sort order: `asc` or `desc` (default: `desc`)
+  - Example request:
+    ```http
+    GET /api/v1/products/prod-123/reviews?rating=5&status=approved&date_from=2024-01-01&sort_by=rating&sort_order=desc&page=1&page_size=10
+    ```
   - Example response:
     ```json
     {

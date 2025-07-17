@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings
 from typing import List
+import logging
 
 class Settings(BaseSettings):
     # App
@@ -19,9 +20,29 @@ class Settings(BaseSettings):
     # Security
     secret_key: str
     cors_origins: List[str] = ["*"]
-    
+
+    def validate(self):
+        missing = []
+        # List of required keys
+        required = [
+            ("supabase_url", self.supabase_url),
+            ("supabase_anon_key", self.supabase_anon_key),
+            ("supabase_service_key", self.supabase_service_key),
+            ("secret_key", self.secret_key),
+        ]
+        for name, value in required:
+            if not value or (isinstance(value, str) and not value.strip()):
+                missing.append(name)
+        if missing:
+            raise RuntimeError(f"Missing required environment variables: {', '.join(missing)}")
+        # Optional: Add format checks (e.g., URL)
+        if not self.supabase_url.startswith("http"):
+            raise RuntimeError("supabase_url must be a valid URL (start with http or https)")
+        logging.info("All required environment variables are present and valid.")
+
     class Config:
         env_file = ".env"
         case_sensitive = False
 
-settings = Settings() 
+settings = Settings()
+settings.validate() 

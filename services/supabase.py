@@ -45,13 +45,49 @@ class SupabaseService:
         result = self.client.table("reviews").insert(data).execute()
         return result.data[0] if result.data else None
 
-    async def get_reviews(self, product_id: str, page: int = 1, page_size: int = 50) -> Dict[str, Any]:
+    async def get_reviews(
+        self,
+        product_id: str,
+        page: int = 1,
+        page_size: int = 50,
+        rating: Optional[str] = None,
+        status: Optional[str] = None,
+        date_from: Optional[str] = None,
+        date_to: Optional[str] = None,
+        sort_by: Optional[str] = "created_at",
+        sort_order: Optional[str] = "desc"
+    ) -> Dict[str, Any]:
         product = self.client.table("products").select("*").eq("product_id", product_id).execute().data
         if not product:
             return {"reviews": [], "total": 0, "page": page, "page_size": page_size, "total_pages": 1, "has_next": False, "has_prev": False}
-        start = (page - 1) * page_size
-        all_reviews = self.client.table("reviews").select("*").eq("product_id", product_id).order("created_at", desc=True).execute().data or []
+        query = self.client.table("reviews").select("*").eq("product_id", product_id)
+        # Filtering
+        if rating:
+            ratings = [int(r.strip()) for r in rating.split(",") if r.strip().isdigit()]
+            if ratings:
+                query = query.in_("rating", ratings)
+        if status:
+            query = query.eq("status", status)
+        if date_from:
+            try:
+                date_from_dt = datetime.fromisoformat(date_from)
+                query = query.gte("created_at", date_from_dt.isoformat())
+            except Exception:
+                pass
+        if date_to:
+            try:
+                date_to_dt = datetime.fromisoformat(date_to)
+                query = query.lte("created_at", date_to_dt.isoformat())
+            except Exception:
+                pass
+        # Sorting
+        if sort_by not in ("created_at", "rating"):
+            sort_by = "created_at"
+        desc = sort_order != "asc"
+        query = query.order(sort_by, desc=desc)
+        all_reviews = query.execute().data or []
         total = len(all_reviews)
+        start = (page - 1) * page_size
         paginated_reviews = all_reviews[start:start+page_size]
         reviews_with_info = []
         for review in paginated_reviews:
