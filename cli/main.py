@@ -110,6 +110,34 @@ cli.add_command(completion)
 
 def display_welcome_message():
     """Display welcome message when CLI is run without arguments"""
+    from rich.console import Console
+    console = Console()
+    click.echo()
+    ascii_art = [
+
+        "░▒▓███████▓▒░░▒▓████████▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓██████████████▓▒░  ",
+        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
+        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
+        "░▒▓███████▓▒░░▒▓██████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
+        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
+        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
+        "░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
+
+    ]
+    # Gradient from F22F46 (red) to FFFFFF (white)
+    start_rgb = (242, 47, 70)
+    end_rgb = (255, 255, 255)
+    steps = len(ascii_art)
+    def lerp(a, b, t):
+        return int(a + (b - a) * t)
+    for i, line in enumerate(ascii_art):
+        t = i / max(steps - 1, 1)
+        r = lerp(start_rgb[0], end_rgb[0], t)
+        g = lerp(start_rgb[1], end_rgb[1], t)
+        b = lerp(start_rgb[2], end_rgb[2], t)
+        color = f"#{r:02X}{g:02X}{b:02X}"
+        console.print(line, style=f"bold {color}")
+    click.echo()
     click.echo(f"{settings.app_name} CLI v{settings.version}")
     click.echo("Command-line interface for the Rencom Reviews API")
     click.echo()

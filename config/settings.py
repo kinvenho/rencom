@@ -1,4 +1,5 @@
 from pydantic_settings import BaseSettings
+from pydantic import Field
 from typing import List
 import logging
 
@@ -13,12 +14,12 @@ class Settings(BaseSettings):
     port: int = 8000
     
     # Supabase
-    supabase_url: str
-    supabase_anon_key: str
-    supabase_service_key: str
+    supabase_url: str = Field(..., env="SUPABASE_URL")
+    supabase_anon_key: str = Field(..., env="SUPABASE_ANON_KEY")
+    supabase_service_key: str = Field(..., env="SUPABASE_SERVICE_KEY")
     
     # Security
-    secret_key: str
+    secret_key: str = Field(..., env="SECRET_KEY")
     cors_origins: List[str] = ["*"]
 
     def validate(self):

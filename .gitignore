@@ -105,7 +105,10 @@ celerybeat.pid
 # mkdocs documentation
 /site
 
-# mypy
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Ignore Kiro and GitHub config directories
+.kiro/
+.github/
