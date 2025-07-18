@@ -16,7 +16,7 @@ import click
 @dataclass
 class CLIConfig:
     """CLI Configuration data class"""
-    server_url: str = "http://localhost:8000"
+    server_url: str = "https://rencom-backend.fly.dev"
     timeout: int = 30
     output_format: str = "text"  # text, json
     verbose: bool = False
@@ -34,7 +34,7 @@ class CLIConfig:
 
 class CLIConfigValidator(BaseModel):
     """Pydantic model for configuration validation"""
-    server_url: str = Field(default="http://localhost:8000", description="Server URL for API requests")
+    server_url: str = Field(default="https://rencom-backend.fly.dev", description="Server URL for API requests")
     timeout: int = Field(default=30, ge=1, le=300, description="Request timeout in seconds")
     output_format: str = Field(default="text", description="Output format")
     verbose: bool = Field(default=False, description="Enable verbose output")

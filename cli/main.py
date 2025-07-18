@@ -22,7 +22,7 @@ from cli.commands.completion import completion
 @dataclass
 class CLIContext:
     """CLI context for sharing configuration across commands"""
-    server_url: str = "http://localhost:8000"
+    server_url: str = "https://rencom-backend.fly.dev"
     timeout: int = 30
     verbose: bool = False
     debug: bool = False

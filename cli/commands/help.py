@@ -81,7 +81,7 @@ def display_comprehensive_help():
     global_options_table.add_column("Description", style="white")
     global_options_table.add_column("Default", style="yellow")
     
-    global_options_table.add_row("--server-url", "Server URL for API requests", "http://localhost:8000")
+    global_options_table.add_row("--server-url", "Server URL for API requests", "https://rencom-backend.fly.dev")
     global_options_table.add_row("--timeout", "Request timeout in seconds", "30")
     global_options_table.add_row("--verbose, -v", "Enable verbose output", "false")
     global_options_table.add_row("--debug", "Enable debug mode", "false")
@@ -92,7 +92,7 @@ def display_comprehensive_help():
     
     # Quick start
     console.print(f"\n[bold green]🚀 Quick Start[/bold green]")
-    console.print("1. Run [cyan]rencom setup --interactive[/cyan] to configure your installation")
+    console.print("1. By default, the CLI connects to the live API at [cyan]https://rencom-backend.fly.dev[/cyan]")
     console.print("2. Run [cyan]rencom health[/cyan] to verify server connectivity")
     console.print("3. Use [cyan]rencom help --examples[/cyan] to see usage examples")
     
