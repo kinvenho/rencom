@@ -1,5 +1,10 @@
 # Rencom Public API Documentation
 
+> **Quick Start:**
+> - For easiest onboarding, use the Rencom CLI: `rencom setup`
+> - For advanced/local setup or contributing, use: `rencom fork`
+> - See the README for installation instructions and more details.
+
 Welcome to the Rencom E-commerce Reviews API! This document provides all the essential information for developers and users to integrate with and use the API.
 
 ---
@@ -19,7 +24,7 @@ Welcome to the Rencom E-commerce Reviews API! This document provides all the ess
 - `GET /` — Health check (returns API status, version, etc.)
   - Example response:
     ```json
-    {"message": "Rencom API is running", "version": "1.0.0", "status": "healthy"}
+    {"message": "Rencom API is running", "version": "1.0.3", "status": "healthy"}
     ```
 - `GET /health` — Detailed health check (returns status of services)
   - Example response:

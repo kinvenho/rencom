@@ -1,5 +1,7 @@
 # Shell Completion for Rencom CLI
 
+> The CLI now supports onboarding (`rencom setup`) and advanced local setup (`rencom fork`). Completion works for all commands.
+
 The Rencom CLI supports shell completion for bash, zsh, fish, and PowerShell.
 
 ## Installation

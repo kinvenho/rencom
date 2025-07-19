@@ -10,135 +10,71 @@ A modern, scalable API platform for collecting and displaying product reviews fo
 - **Supabase Backend**: Real-time, scalable PostgreSQL database
 - **FastAPI**: High-performance Python backend
 - **Docker-Ready**: Easy local development and deployment
+- **CLI Onboarding**: Get started instantly with `rencom setup`
 
-## 🏗️ Architecture
+## 🛠️ Installation
 
-```
-rencom/
-├── api/               # FastAPI route handlers
-├── config/            # Configuration and settings
-├── models/            # Pydantic data models
-├── services/          # Business logic (Supabase)
-├── utils/             # Helper utilities
-├── main.py            # FastAPI application entry point
-├── requirements.txt   # Python dependencies
-├── Dockerfile         # Containerization
-├── docker-compose.yml # Development environment
-└── setup.sh           # Setup script
+### From PyPI (recommended for most users)
+```bash
+pip install rencom-cli
 ```
 
-## 📋 Prerequisites
+### From Source (for contributors/advanced users)
+```bash
+git clone <repository-url>
+cd rencom
+pip install .
+```
 
-- Python 3.8+
-- Docker (optional)
-- Supabase account
+## ⚡ Quick Start (API Users)
 
-## 🚀 Quick Start
-
-1. **Clone and Setup**
+1. **Onboard Instantly**
    ```bash
-   git clone <repository-url>
-   cd rencom
-   chmod +x setup.sh
-   ./setup.sh
+   rencom setup
    ```
-2. **Configure Environment**
+   - This will guide you through API onboarding and create your API token.
+
+2. **Try the API**
+   - Use your token to make requests:
    ```bash
-   cp env.example .env
-   # Edit .env with your Supabase and secret keys
+   curl -X POST https://rencom-backend.fly.dev/api/v1/reviews \
+     -H 'Authorization: Bearer <your-token>' \
+     -H 'Content-Type: application/json' \
+     -d '{"product_id": "prod-123", "user_id": "user-abc-123", "rating": 5, "comment": "Great!"}'
    ```
-3. **Set Up Supabase Database**
-   ```sql
-   -- Reviews table
-   CREATE TABLE reviews (
-       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-       product_id VARCHAR(255) NOT NULL,
-       user_id VARCHAR(255),
-       rating INTEGER NOT NULL,
-       comment TEXT,
-       status VARCHAR(32) DEFAULT 'approved',
-       created_at TIMESTAMP DEFAULT NOW()
-   );
+   - Or explore the full API in [Postman](https://documenter.getpostman.com/view/your-doc-id)
 
-   -- API Tokens table
-   CREATE TABLE api_tokens (
-       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-       token VARCHAR(255) UNIQUE NOT NULL,
-       name VARCHAR(255),
-       created_at TIMESTAMP DEFAULT NOW()
-   );
-
-   -- Products table
-   CREATE TABLE products (
-       id SERIAL PRIMARY KEY,
-       product_id VARCHAR(255) UNIQUE NOT NULL,
-       name VARCHAR(255),
-       created_at TIMESTAMP DEFAULT NOW()
-   );
-
-   -- Users table
-   CREATE TABLE users (
-       id VARCHAR(255) PRIMARY KEY,
-       api_token_id UUID REFERENCES api_tokens(id)
-   );
-   ```
-4. **Run the Application**
+3. **Shell Completion (Optional)**
+   - Enable tab completion for bash, zsh, fish, or PowerShell:
    ```bash
-   python main.py
-   # or with Docker
-   docker-compose up
+   rencom completion install bash --install
+   # See COMPLETION.md for details
    ```
-5. **Access the API Docs**
-   - http://localhost:8000/docs
+
+## 👩‍💻 Advanced: Local Development & Forking
+
+If you want to run the API locally, contribute, or self-host:
+
+1. **Fork and Setup Locally**
+   ```bash
+   rencom fork
+   ```
+   - This will walk you through forking, configuring, and running the codebase locally.
+
+2. **Manual Setup (for reference)**
+   - See the `fork` command or the `api/`, `config/`, and `services/` folders for advanced configuration.
 
 ## 📚 API Documentation
-
-### Authentication
-All API requests require an API token. Include the following header:
-```
-Authorization: Bearer <your-api-token>
-```
-
-### Review Endpoints
-- `POST /api/v1/reviews` — Submit a new review (product_id, user_id, rating, comment)
-- `GET /api/v1/products/{product_id}/reviews` — Get product reviews (paginated)
-
-## 🗄️ Database Schema
-See the Quick Start section for SQL table definitions.
-
-## 🔧 Development
-- **api/**: FastAPI route handlers
-- **config/**: App configuration
-- **models/**: Pydantic models
-- **services/**: Supabase integration
-- **utils/**: Helper functions
-
-### Development Commands
-```bash
-python main.py        # Run development server
-pytest               # Run tests (when implemented)
-```
+- See [PUBLIC_API_DOCS.md](PUBLIC_API_DOCS.md) for full endpoint details.
+- Or use the CLI: `rencom help`
 
 ## 🤝 Contributing
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+- Use `rencom fork` to get started as a contributor.
+- Standard PR workflow applies.
 
 ## 📄 License
 MIT License
 
 ## 🆘 Support
 - Create an issue in the GitHub repository
-- Check the API documentation at `/docs`
-
-## 🔮 Roadmap
-- ✅ API token authentication
-- ✅ Product review endpoints
-- ✅ Pagination and performance
-- 📅 Admin endpoints for token management
-- 📅 Analytics and reporting
-- 📅 Advanced filtering and search
-- 📅 Multi-language support 
-- 📅 Multi-language support 
+- Check the API documentation at `/docs` 
