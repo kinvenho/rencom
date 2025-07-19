@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     # App
     app_name: str = "Rencom"
     debug: bool = False
-    version: str = "1.0.0"
+    version: str = "1.0.3"
     
     # Server
     host: str = "0.0.0.0"
