@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     # Security
     secret_key: str = Field(..., env="SECRET_KEY")
     cors_origins: List[str] = ["*"]
+    
+    # PyPI (optional)
+    pypi_token: str = Field(default="", env="PYPI_TOKEN")
 
     def validate(self):
         missing = []
