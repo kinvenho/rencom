@@ -15,7 +15,7 @@ API_TOKENS_ENDPOINT = "/api/v1/tokens"
 API_REVIEWS_ENDPOINT = "/api/v1/reviews"
 
 # Documentation and Support URLs
-GITHUB_REPO_URL = "https://github.com/rencom"
+GITHUB_REPO_URL = "https://github.com/kinvenho/rencom"
 LEAD_DEVELOPER_URL = "https://renreviews.com/"
 FASTAPI_DOCS_URL = "https://fastapi.tiangolo.com"
 SUPABASE_DOCS_URL = "https://supabase.com/docs"

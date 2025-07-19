@@ -31,22 +31,26 @@ def setup(ctx):
     # 2. Prompt for token name and create token
     token_name = Prompt.ask("Enter a name for your API token (e.g. 'my-app', 'test', or leave blank)", default="")
     console.print("\n[bold]Creating your API token...[/bold]")
+    
     try:
         response = requests.post(
             f"{API_BASE_URL}/api/v1/tokens",
             json={"name": token_name}
         )
+        
         if response.status_code == 200:
             token = response.json().get("token")
             if not token:
                 raise Exception("No token returned from API.")
+            
             # 3. Display/copy token
             console.print(Panel.fit(
                 f"[bold green]Your API token:[/bold green]\n\n[white on blue]{token}[/white on blue]\n\n[red]Copy and save this token now! It will not be shown again.[/red]",
                 border_style="green"
             ))
-            else:
+        else:
             raise Exception(response.text)
+            
     except Exception as e:
         console.print(f"[bold red]Failed to create token: {e}[/bold red]")
         return

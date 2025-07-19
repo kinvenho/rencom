@@ -21,6 +21,9 @@ wheels/
 *.egg
 MANIFEST
 
+# PyPI upload script (contains sensitive tokens)
+upload_to_pypi.py
+
 # Virtual environments
 venv/
 env/
