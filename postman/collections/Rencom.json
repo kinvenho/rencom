@@ -1,0 +1,989 @@
+{
+	"info": {
+		"_postman_id": "3adadbfc-dc2d-481c-bda4-a75bbe91640b",
+		"name": "Rencom",
+		"description": "Plug-and-Play Product Reviews API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "43667614-3adadbfc-dc2d-481c-bda4-a75bbe91640b"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "v1",
+					"item": [
+						{
+							"name": "tokens",
+							"item": [
+								{
+									"name": "Create Api Token",
+									"id": "10db7346-9899-4219-9233-669c5836265f",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"culpa cillum\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/tokens",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"tokens"
+											]
+										}
+									},
+									"response": [
+										{
+											"id": "ee54f9b7-f951-4f94-a92b-2e6bac1b3752",
+											"name": "Successful Response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"culpa cillum\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/tokens",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"tokens"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"uuid": "ed464170-6de6-4343-afff-200742e76e33"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"token\": \"ad nulla ex\",\n  \"name\": \"aute dolore\",\n  \"created_at\": \"1980-07-22T06:13:10.200Z\"\n}"
+										},
+										{
+											"id": "e76fbcfa-4962-496d-aaf1-8aebc1a07979",
+											"name": "Validation Error",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"culpa cillum\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/tokens",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"tokens"
+													]
+												}
+											},
+											"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+											"code": 422,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"uuid": "3a1f135b-3f35-42b6-8525-b6b7bf14f10d"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"nulla occaecat ipsum ad cupidatat\",\n        \"nisi exercitation proident incididunt\"\n      ],\n      \"msg\": \"laboris minim veniam in\",\n      \"type\": \"irure\"\n    },\n    {\n      \"loc\": [\n        \"dolore irure dolore sunt\",\n        \"ut id dolore\"\n      ],\n      \"msg\": \"dolore minim\",\n      \"type\": \"quis laboris cupidatat do\"\n    }\n  ]\n}"
+										}
+									]
+								}
+							],
+							"id": "4be9086a-6ead-460d-a5f4-297fe8ff4d7f"
+						},
+						{
+							"name": "reviews",
+							"item": [
+								{
+									"name": "{review_id}",
+									"item": [
+										{
+											"name": "Delete Review",
+											"id": "fbb6c9ee-e8c1-4f22-bf58-46e4b6fed29d",
+											"protocolProfileBehavior": {
+												"disableBodyPruning": true
+											},
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/reviews/:review_id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"reviews",
+														":review_id"
+													],
+													"variable": [
+														{
+															"key": "review_id",
+															"value": "eiusmod ex laborum dolor",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"id": "ff4d85fd-4b32-4ef4-8712-9b173d18924e",
+													"name": "Successful Response",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/reviews/:review_id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"reviews",
+																":review_id"
+															],
+															"variable": [
+																{
+																	"key": "review_id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json",
+															"uuid": "65ba6418-9a75-4edd-8b99-2528c0fd283f"
+														}
+													],
+													"cookie": [],
+													"body": "{}"
+												},
+												{
+													"id": "8cc15a6a-442d-4d0b-863b-d2e3458f31dd",
+													"name": "Validation Error",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/reviews/:review_id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"reviews",
+																":review_id"
+															],
+															"variable": [
+																{
+																	"key": "review_id"
+																}
+															]
+														}
+													},
+													"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+													"code": 422,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json",
+															"uuid": "5ab142cd-2999-4eca-a664-6c290189d1e6"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"nulla occaecat ipsum ad cupidatat\",\n        \"nisi exercitation proident incididunt\"\n      ],\n      \"msg\": \"laboris minim veniam in\",\n      \"type\": \"irure\"\n    },\n    {\n      \"loc\": [\n        \"dolore irure dolore sunt\",\n        \"ut id dolore\"\n      ],\n      \"msg\": \"dolore minim\",\n      \"type\": \"quis laboris cupidatat do\"\n    }\n  ]\n}"
+												}
+											]
+										}
+									],
+									"id": "c318df39-1dff-48fe-95fd-97cdbae0d283"
+								},
+								{
+									"name": "Submit Review",
+									"id": "b58d3a90-e0c2-4f18-b4ad-667dee3ee7b7",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"product_id\": \"in nostrud\",\n  \"user_id\": \"aute laborum\",\n  \"rating\": 1,\n  \"comment\": \"nulla cu\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/reviews",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"reviews"
+											]
+										}
+									},
+									"response": [
+										{
+											"id": "6ccf2b22-f8c0-4c24-a206-b52077717313",
+											"name": "Successful Response",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"product_id\": \"in nostrud\",\n  \"user_id\": \"aute laborum\",\n  \"rating\": 1,\n  \"comment\": \"nulla cu\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/reviews",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"reviews"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"uuid": "870b619a-1048-4159-b5df-8af0f623acbe"
+												}
+											],
+											"cookie": [],
+											"body": "{}"
+										},
+										{
+											"id": "fc0d53de-e12a-4e87-b824-3664582c22cb",
+											"name": "Validation Error",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"product_id\": \"in nostrud\",\n  \"user_id\": \"aute laborum\",\n  \"rating\": 1,\n  \"comment\": \"nulla cu\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/reviews",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"reviews"
+													]
+												}
+											},
+											"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+											"code": 422,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json",
+													"uuid": "a61dd3a9-2e40-4d6f-b557-20492b568e61"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"nulla occaecat ipsum ad cupidatat\",\n        \"nisi exercitation proident incididunt\"\n      ],\n      \"msg\": \"laboris minim veniam in\",\n      \"type\": \"irure\"\n    },\n    {\n      \"loc\": [\n        \"dolore irure dolore sunt\",\n        \"ut id dolore\"\n      ],\n      \"msg\": \"dolore minim\",\n      \"type\": \"quis laboris cupidatat do\"\n    }\n  ]\n}"
+										}
+									]
+								}
+							],
+							"id": "44c2d4b1-92e6-434f-be2b-0419e682ab61"
+						},
+						{
+							"name": "products",
+							"item": [
+								{
+									"name": "{product_external_id}",
+									"item": [
+										{
+											"name": "reviews",
+											"item": [
+												{
+													"name": "Get Product Reviews",
+													"id": "730e2dbf-1073-47db-bb57-b8c613fb39bb",
+													"protocolProfileBehavior": {
+														"disableBodyPruning": true
+													},
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:product_external_id/reviews?page=1&page_size=50&rating=eu nostrud&status=eu nostrud&date_from=eu nostrud&date_to=eu nostrud&sort_by=eu nostrud&sort_order=eu nostrud",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":product_external_id",
+																"reviews"
+															],
+															"query": [
+																{
+																	"key": "page",
+																	"value": "1",
+																	"description": "Page number"
+																},
+																{
+																	"key": "page_size",
+																	"value": "50",
+																	"description": "Reviews per page"
+																},
+																{
+																	"key": "rating",
+																	"value": "eu nostrud",
+																	"description": "Filter by rating(s), comma-separated (e.g., 4,5)"
+																},
+																{
+																	"key": "status",
+																	"value": "eu nostrud",
+																	"description": "Filter by review status (e.g., approved)"
+																},
+																{
+																	"key": "date_from",
+																	"value": "eu nostrud",
+																	"description": "Filter reviews created after this date (YYYY-MM-DD)"
+																},
+																{
+																	"key": "date_to",
+																	"value": "eu nostrud",
+																	"description": "Filter reviews created before this date (YYYY-MM-DD)"
+																},
+																{
+																	"key": "sort_by",
+																	"value": "eu nostrud",
+																	"description": "Sort by field: created_at or rating"
+																},
+																{
+																	"key": "sort_order",
+																	"value": "eu nostrud",
+																	"description": "Sort order: asc or desc"
+																}
+															],
+															"variable": [
+																{
+																	"key": "product_external_id",
+																	"value": "laboris sit Ut enim",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"id": "690d5036-35c9-47d7-b724-1796b81dc113",
+															"name": "Successful Response",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/products/:product_external_id/reviews?page=1&page_size=50&rating=eu nostrud&status=eu nostrud&date_from=eu nostrud&date_to=eu nostrud&sort_by=eu nostrud&sort_order=eu nostrud",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"products",
+																		":product_external_id",
+																		"reviews"
+																	],
+																	"query": [
+																		{
+																			"description": "Page number",
+																			"key": "page",
+																			"value": "1"
+																		},
+																		{
+																			"description": "Reviews per page",
+																			"key": "page_size",
+																			"value": "50"
+																		},
+																		{
+																			"description": "Filter by rating(s), comma-separated (e.g., 4,5)",
+																			"key": "rating",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Filter by review status (e.g., approved)",
+																			"key": "status",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Filter reviews created after this date (YYYY-MM-DD)",
+																			"key": "date_from",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Filter reviews created before this date (YYYY-MM-DD)",
+																			"key": "date_to",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Sort by field: created_at or rating",
+																			"key": "sort_by",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Sort order: asc or desc",
+																			"key": "sort_order",
+																			"value": "eu nostrud"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "product_external_id"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json",
+																	"uuid": "0601cb30-dffc-4ff5-80ee-de9a4ac4c76b"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"reviews\": [\n    {\n      \"id\": \"urn:uuid:03cbe032-0aee-6d24-020b-462994673cb2\",\n      \"product_id\": \"la\",\n      \"user_id\": \"minim \",\n      \"rating\": -18747220,\n      \"comment\": \"non dolor commodo\",\n      \"status\": \"sint Excepteur ex\",\n      \"created_at\": \"1949-03-24T21:59:43.421Z\"\n    },\n    {\n      \"id\": \"urn:uuid:e58c27ee-393d-30bc-2b16-4abd2c2148c6\",\n      \"product_id\": \"quis sit consectetur\",\n      \"user_id\": \"ut minim\",\n      \"rating\": 58126709,\n      \"comment\": \"ex ea\",\n      \"status\": \"sed nisi Lorem\",\n      \"created_at\": \"2003-10-01T08:21:40.347Z\"\n    }\n  ],\n  \"total\": -25297916,\n  \"page\": -65205790,\n  \"page_size\": -92241836,\n  \"total_pages\": 76246940,\n  \"has_next\": true,\n  \"has_prev\": true\n}"
+														},
+														{
+															"id": "b6bfdae2-e662-40eb-bd34-c9da47fe7474",
+															"name": "Validation Error",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/products/:product_external_id/reviews?page=1&page_size=50&rating=eu nostrud&status=eu nostrud&date_from=eu nostrud&date_to=eu nostrud&sort_by=eu nostrud&sort_order=eu nostrud",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"products",
+																		":product_external_id",
+																		"reviews"
+																	],
+																	"query": [
+																		{
+																			"description": "Page number",
+																			"key": "page",
+																			"value": "1"
+																		},
+																		{
+																			"description": "Reviews per page",
+																			"key": "page_size",
+																			"value": "50"
+																		},
+																		{
+																			"description": "Filter by rating(s), comma-separated (e.g., 4,5)",
+																			"key": "rating",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Filter by review status (e.g., approved)",
+																			"key": "status",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Filter reviews created after this date (YYYY-MM-DD)",
+																			"key": "date_from",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Filter reviews created before this date (YYYY-MM-DD)",
+																			"key": "date_to",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Sort by field: created_at or rating",
+																			"key": "sort_by",
+																			"value": "eu nostrud"
+																		},
+																		{
+																			"description": "Sort order: asc or desc",
+																			"key": "sort_order",
+																			"value": "eu nostrud"
+																		}
+																	],
+																	"variable": [
+																		{
+																			"key": "product_external_id"
+																		}
+																	]
+																}
+															},
+															"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+															"code": 422,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json",
+																	"uuid": "5236915f-b988-4357-8cc7-95be53912ba7"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"nulla occaecat ipsum ad cupidatat\",\n        \"nisi exercitation proident incididunt\"\n      ],\n      \"msg\": \"laboris minim veniam in\",\n      \"type\": \"irure\"\n    },\n    {\n      \"loc\": [\n        \"dolore irure dolore sunt\",\n        \"ut id dolore\"\n      ],\n      \"msg\": \"dolore minim\",\n      \"type\": \"quis laboris cupidatat do\"\n    }\n  ]\n}"
+														}
+													]
+												}
+											],
+											"id": "65cd6c34-5a34-4b2f-a9a7-3c139425da4b"
+										},
+										{
+											"name": "summary",
+											"item": [
+												{
+													"name": "Get Product Summary",
+													"id": "5c70a4cf-fca5-4ebb-8e2e-b4aa7cb1f7d2",
+													"protocolProfileBehavior": {
+														"disableBodyPruning": true
+													},
+													"request": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/products/:product_external_id/summary",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"products",
+																":product_external_id",
+																"summary"
+															],
+															"variable": [
+																{
+																	"key": "product_external_id",
+																	"value": "laboris sit Ut enim",
+																	"description": "(Required) "
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"id": "35ea0336-45e1-4823-9ff6-7cc71748c3dc",
+															"name": "Successful Response",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/products/:product_external_id/summary",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"products",
+																		":product_external_id",
+																		"summary"
+																	],
+																	"variable": [
+																		{
+																			"key": "product_external_id"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json",
+																	"uuid": "e4c63e8a-0a45-4495-a53d-84a3aa82f8ee"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"product_id\": \"Ut cillum dolor\",\n  \"average_rating\": 26515464.814963743,\n  \"total_reviews\": 75056013,\n  \"rating_distribution\": {},\n  \"last_updated\": \"1982-11-01T19:34:53.124Z\"\n}"
+														},
+														{
+															"id": "709d3921-a813-4b88-bb33-fdc08c04f581",
+															"name": "Validation Error",
+															"originalRequest": {
+																"method": "GET",
+																"header": [
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/products/:product_external_id/summary",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"products",
+																		":product_external_id",
+																		"summary"
+																	],
+																	"variable": [
+																		{
+																			"key": "product_external_id"
+																		}
+																	]
+																}
+															},
+															"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+															"code": 422,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json",
+																	"uuid": "6d30e58a-15aa-4d4d-b262-d3e313ec9bcb"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"nulla occaecat ipsum ad cupidatat\",\n        \"nisi exercitation proident incididunt\"\n      ],\n      \"msg\": \"laboris minim veniam in\",\n      \"type\": \"irure\"\n    },\n    {\n      \"loc\": [\n        \"dolore irure dolore sunt\",\n        \"ut id dolore\"\n      ],\n      \"msg\": \"dolore minim\",\n      \"type\": \"quis laboris cupidatat do\"\n    }\n  ]\n}"
+														}
+													]
+												}
+											],
+											"id": "50a6934a-a747-4ce4-939f-c9cf2f5122b7"
+										}
+									],
+									"id": "e969a240-0b84-40a3-af24-0cc57bc68711"
+								}
+							],
+							"id": "e6d73276-1d82-466e-9f19-ede86ad86902"
+						}
+					],
+					"id": "0b05590c-8e82-4d14-9366-e36eaf65ce9e"
+				}
+			],
+			"id": "14d0026c-e9c8-4dcd-875a-57f6eb990db7"
+		},
+		{
+			"name": "/",
+			"item": [
+				{
+					"name": "Root",
+					"id": "a3cd57a8-cf90-439f-bb1c-82b3228661da",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								""
+							]
+						},
+						"description": "Health check endpoint"
+					},
+					"response": [
+						{
+							"id": "9bb92256-7db8-4b1c-b7a7-c67994aeda6b",
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"uuid": "0255fff3-a400-426c-a6fe-a6b533b9a8be"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				}
+			],
+			"id": "d8bcd766-9230-4703-8d23-2bd8592a8b37"
+		},
+		{
+			"name": "health",
+			"item": [
+				{
+					"name": "Health Check",
+					"id": "9a402c2e-4bb2-4f00-b874-08344f7d6368",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Detailed health check"
+					},
+					"response": [
+						{
+							"id": "d97e60e0-b136-442b-9a1c-33eed283f5cc",
+							"name": "Successful Response",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/health",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"uuid": "deda6d70-757d-45b6-b6a1-d9a2a88fad98"
+								}
+							],
+							"cookie": [],
+							"body": "{}"
+						}
+					]
+				}
+			],
+			"id": "3dfd8252-962b-4ea5-94af-52a6632f6c01"
+		}
+	],
+	"variable": [
+		{
+			"id": "f7280906-3f7c-4275-b06a-8a560f100bcb",
+			"key": "baseUrl",
+			"value": "/"
+		}
+	]
+}
