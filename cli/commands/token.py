@@ -4,9 +4,7 @@ Token management commands for Rencom CLI
 """
 
 import click
-import secrets
-import string
-import asyncio
+import requests
 from typing import Optional
 from datetime import datetime
 
@@ -17,7 +15,8 @@ from cli.utils.error_handler import (
     validate_token, require_confirmation, validate_input,
     validate_positive_integer, validate_token_name
 )
-from services.supabase import supabase
+
+API_BASE_URL = "https://rencom-backend.fly.dev"
 
 
 @click.group()
@@ -42,10 +41,6 @@ def generate(ctx, name: Optional[str], length: int):
     if name:
         name = validate_token_name(name)
     
-    # Generate secure random token
-    alphabet = string.ascii_letters + string.digits
-    token = ''.join(secrets.choice(alphabet) for _ in range(length))
-    
     # Prompt for token name if not provided
     if not name:
         name = click.prompt(
@@ -58,25 +53,38 @@ def generate(ctx, name: Optional[str], length: int):
         else:
             name = None
     
-    # Create token in database
-    print_info("Creating token in database...")
-    token_data = asyncio.run(supabase.create_token(token, name))
-    
-    if token_data:
-        print_success("Token created successfully!")
-        click.echo()
-        click.echo("Token Details:")
-        click.echo(f"  Token: {token}")
-        if name:
-            click.echo(f"  Name: {name}")
-        click.echo(f"  Created: {token_data.get('created_at', 'Unknown')}")
-        click.echo()
-        print_warning("IMPORTANT: Save this token securely. It will not be shown again.")
-        click.echo("Use this token in API requests with the 'Authorization: Bearer <token>' header.")
-    else:
+    # Create token via live API
+    print_info("Creating token via API...")
+    try:
+        response = requests.post(
+            f"{API_BASE_URL}/api/v1/tokens",
+            json={"name": name or ""}
+        )
+        
+        if response.status_code == 200:
+            token_data = response.json()
+            token = token_data.get("token")
+            
+            if not token:
+                raise Exception("No token returned from API.")
+            
+            print_success("Token created successfully!")
+            click.echo()
+            click.echo("Token Details:")
+            click.echo(f"  Token: {token}")
+            if name:
+                click.echo(f"  Name: {name}")
+            click.echo(f"  Created: {token_data.get('created_at', 'Unknown')}")
+            click.echo()
+            print_warning("IMPORTANT: Save this token securely. It will not be shown again.")
+            click.echo("Use this token in API requests with the 'Authorization: Bearer <token>' header.")
+        else:
+            raise Exception(f"API error: {response.status_code} - {response.text}")
+            
+    except Exception as e:
         raise AuthenticationError(
-            "Failed to create token in database",
-            hint="Check database connection and permissions"
+            f"Failed to create token: {e}",
+            hint="Check API connectivity and try again"
         )
 
 
@@ -93,12 +101,23 @@ def revoke(ctx, token_value: str, force: bool):
     
     # Check if token exists
     print_info("Checking token...")
-    token_data = asyncio.run(supabase.get_token(token_value))
-    
-    if not token_data:
+    try:
+        response = requests.get(
+            f"{API_BASE_URL}/api/v1/tokens/{token_value}"
+        )
+        if response.status_code == 200:
+            token_data = response.json()
+            if not token_data:
+                raise AuthenticationError(
+                    "Token not found",
+                    hint="Verify the token value is correct"
+                )
+        else:
+            raise Exception(f"API error: {response.status_code} - {response.text}")
+    except Exception as e:
         raise AuthenticationError(
-            "Token not found",
-            hint="Verify the token value is correct"
+            f"Failed to check token: {e}",
+            hint="Check API connectivity and try again"
         )
     
     # Show token info
@@ -117,14 +136,18 @@ def revoke(ctx, token_value: str, force: bool):
     
     # Revoke token (delete from database)
     print_info("Revoking token...")
-    result = supabase.client.table("api_tokens").delete().eq("token", token_value).execute()
-    
-    if result.data:
-        print_success("Token revoked successfully")
-    else:
+    try:
+        response = requests.delete(
+            f"{API_BASE_URL}/api/v1/tokens/{token_value}"
+        )
+        if response.status_code == 200:
+            print_success("Token revoked successfully")
+        else:
+            raise Exception(f"API error: {response.status_code} - {response.text}")
+    except Exception as e:
         raise AuthenticationError(
-            "Failed to revoke token",
-            hint="Check database connection and permissions"
+            f"Failed to revoke token: {e}",
+            hint="Check API connectivity and try again"
         )
 
 
@@ -144,13 +167,19 @@ def list(ctx, limit: int, show_all: bool):
     print_info("Fetching tokens...")
     
     # Get all tokens from database
-    query = supabase.client.table("api_tokens").select("*").order("created_at", desc=True)
-    
-    if not show_all:
-        query = query.limit(limit)
-    
-    result = query.execute()
-    tokens = result.data or []
+    try:
+        response = requests.get(
+            f"{API_BASE_URL}/api/v1/tokens"
+        )
+        if response.status_code == 200:
+            tokens = response.json()
+        else:
+            raise Exception(f"API error: {response.status_code} - {response.text}")
+    except Exception as e:
+        raise AuthenticationError(
+            f"Failed to list tokens: {e}",
+            hint="Check API connectivity and try again"
+        )
     
     if not tokens:
         print_info("No tokens found")

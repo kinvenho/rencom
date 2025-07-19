@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Help and support command for Rencom CLI
-Provides comprehensive help information and support contact details
+Help command for Rencom CLI
+Provides comprehensive help information and usage examples
 """
 
 import click
@@ -17,7 +17,11 @@ from cli.utils.display import (
     print_command_help, Colors, console
 )
 from cli.utils.error_handler import error_handler, ValidationError, validate_choice
-from config.settings import settings
+from cli.utils.constants import (
+    COMMAND_DESCRIPTIONS, EXAMPLE_DESCRIPTIONS, TROUBLESHOOTING_TIPS,
+    COMMON_ISSUES, GITHUB_REPO_URL, LEAD_DEVELOPER_URL, FASTAPI_DOCS_URL,
+    SUPABASE_DOCS_URL, CLI_PYPI_URL, DEFAULT_SERVER_URL
+)
 
 @click.command()
 @click.option('--command', '-c', help='Show detailed help for a specific command')
@@ -46,33 +50,17 @@ def display_comprehensive_help():
     
     console.print("\n")
     console.print(Panel.fit(
-        f"[bold blue]{settings.app_name} CLI Help[/bold blue]",
+        f"[bold blue]Rencom CLI Help[/bold blue]",
         border_style="blue"
     ))
     
     # Overview
     console.print(f"\n[bold green]📖 Overview[/bold green]")
-    console.print(f"The {settings.app_name} CLI provides command-line access to the Rencom Reviews API.")
+    console.print(f"The Rencom CLI provides command-line access to the Rencom Reviews API.")
     console.print("Use these commands to check server health, manage tokens, and get setup guidance.")
     
     # Available commands
-    commands = {
-        "rencom": "Show welcome message and basic information",
-        "rencom health": "Check server health status and connectivity",
-        "rencom setup": "Display setup documentation and configuration guidance",
-        "rencom setup --interactive": "Run interactive setup wizard",
-        "rencom setup validate": "Validate current configuration",
-        "rencom setup env": "Show environment variable template",
-        "rencom help": "Show this comprehensive help information",
-        "rencom help --examples": "Show usage examples for all commands",
-        "rencom help --support": "Show support contact information",
-        "rencom help --command <cmd>": "Show detailed help for specific command",
-        "rencom token generate": "Generate new API access token (coming soon)",
-        "rencom token revoke": "Revoke existing API token (coming soon)",
-        "rencom token list": "List active tokens (coming soon)"
-    }
-    
-    print_command_help(commands, "Available Commands")
+    print_command_help(COMMAND_DESCRIPTIONS, "Available Commands")
     
     # Global options
     console.print(f"\n[bold green]⚙️  Global Options[/bold green]")
@@ -81,7 +69,7 @@ def display_comprehensive_help():
     global_options_table.add_column("Description", style="white")
     global_options_table.add_column("Default", style="yellow")
     
-    global_options_table.add_row("--server-url", "Server URL for API requests", "https://rencom-backend.fly.dev")
+    global_options_table.add_row("--server-url", "Server URL for API requests", DEFAULT_SERVER_URL)
     global_options_table.add_row("--timeout", "Request timeout in seconds", "30")
     global_options_table.add_row("--verbose, -v", "Enable verbose output", "false")
     global_options_table.add_row("--debug", "Enable debug mode", "false")
@@ -92,9 +80,10 @@ def display_comprehensive_help():
     
     # Quick start
     console.print(f"\n[bold green]🚀 Quick Start[/bold green]")
-    console.print("1. By default, the CLI connects to the live API at [cyan]https://rencom-backend.fly.dev[/cyan]")
-    console.print("2. Run [cyan]rencom health[/cyan] to verify server connectivity")
-    console.print("3. Use [cyan]rencom help --examples[/cyan] to see usage examples")
+    console.print(f"1. By default, the CLI connects to the live API at [cyan]{DEFAULT_SERVER_URL}[/cyan]")
+    console.print("2. Run [cyan]rencom setup[/cyan] to onboard and create your API token")
+    console.print("3. Run [cyan]rencom health[/cyan] to verify server connectivity")
+    console.print("4. Use [cyan]rencom help --examples[/cyan] to see usage examples")
     
     # Support information
     display_support_information(compact=True)
@@ -125,23 +114,28 @@ def display_command_help(command_name: str):
             ]
         },
         "setup": {
-            "description": "Display setup documentation and configuration guidance",
-            "usage": "rencom setup [SUBCOMMAND] [OPTIONS]",
-            "subcommands": [
-                ("setup", "Show setup documentation"),
-                ("setup --interactive", "Run interactive setup wizard"),
-                ("setup validate", "Validate current configuration"),
-                ("setup env", "Show environment variable template")
+            "description": "Onboard and create your API token for the Rencom API",
+            "usage": "rencom setup",
+            "examples": [
+                "rencom setup"
             ],
-            "options": [
-                ("--interactive, -i", "Run interactive setup wizard")
+            "exit_codes": [
+                ("0", "Setup completed successfully"),
+                ("1", "Setup failed or was cancelled")
+            ]
+        },
+        "fork": {
+            "description": "Advanced: Fork and run the codebase locally for development",
+            "usage": "rencom fork [SUBCOMMAND]",
+            "subcommands": [
+                ("fork", "Run interactive setup for local development"),
+                ("fork health", "Check health of local development server")
             ],
             "examples": [
-                "rencom setup",
-                "rencom setup --interactive",
-                "rencom setup validate",
-                "rencom setup env"
-            ]
+                "rencom fork",
+                "rencom fork health"
+            ],
+            "status": "🔧 Advanced developer command"
         },
         "help": {
             "description": "Show comprehensive help information and support details",
@@ -159,14 +153,18 @@ def display_command_help(command_name: str):
             ]
         },
         "token": {
-            "description": "Manage API access tokens (coming soon)",
+            "description": "Manage API access tokens",
             "usage": "rencom token [SUBCOMMAND] [OPTIONS]",
             "subcommands": [
                 ("token generate", "Generate new API access token"),
                 ("token revoke", "Revoke existing API token"),
                 ("token list", "List active tokens")
             ],
-            "status": "⚠️  This command is not yet implemented"
+            "examples": [
+                "rencom token generate",
+                "rencom token list",
+                "rencom token revoke <token-id>"
+            ]
         }
     }
     
@@ -248,111 +246,134 @@ def display_usage_examples():
         border_style="blue"
     ))
     
-    examples_by_category = {
-        "Basic Usage": [
-            ("rencom", "Show welcome message and version"),
-            ("rencom --version", "Show version information"),
-            ("rencom --help", "Show basic help information")
-        ],
-        "Health Checking": [
-            ("rencom health", "Check server health with default settings"),
-            ("rencom health --verbose", "Check health with detailed output"),
-            ("rencom health --server-url http://localhost:3000", "Check health of custom server"),
-            ("rencom health --timeout 60", "Check health with extended timeout")
-        ],
-        "Setup and Configuration": [
-            ("rencom setup", "Show setup documentation"),
-            ("rencom setup --interactive", "Run interactive setup wizard"),
-            ("rencom setup validate", "Validate current configuration"),
-            ("rencom setup env", "Show environment variable template")
-        ],
-        "Help and Support": [
-            ("rencom help", "Show comprehensive help information"),
-            ("rencom help --examples", "Show usage examples (this screen)"),
-            ("rencom help --support", "Show support contact information"),
-            ("rencom help --command health", "Show detailed help for health command")
-        ],
-        "Token Management (Coming Soon)": [
-            ("rencom token generate", "Generate new API access token"),
-            ("rencom token revoke <token>", "Revoke specific API token"),
-            ("rencom token list", "List all active tokens")
-        ],
-        "Advanced Usage": [
-            ("rencom --debug health", "Run health check with debug output"),
-            ("rencom --server-url https://api.example.com health", "Check remote server health"),
-            ("rencom --verbose setup validate", "Validate configuration with verbose output")
-        ]
-    }
+    # Basic Usage
+    console.print(f"\n[bold green]📋 Basic Usage[/bold green]")
+    basic_examples = [
+        "rencom",
+        "rencom --version",
+        "rencom --help"
+    ]
     
-    for category, examples in examples_by_category.items():
-        console.print(f"\n[bold green]📋 {category}[/bold green]")
-        
-        for command, description in examples:
-            console.print(f"  [cyan]{command}[/cyan]")
-            console.print(f"    {description}")
-            console.print()
+    for example in basic_examples:
+        console.print(f"  {example}")
+        console.print(f"    {EXAMPLE_DESCRIPTIONS.get(example, 'Execute the command')}")
+        console.print()
+    
+    # Health Checking
+    console.print(f"\n[bold green]📋 Health Checking[/bold green]")
+    health_examples = [
+        "rencom health",
+        "rencom health --verbose",
+        "rencom health --server-url http://localhost:3000",
+        "rencom health --timeout 60"
+    ]
+    
+    for example in health_examples:
+        console.print(f"  {example}")
+        console.print(f"    {EXAMPLE_DESCRIPTIONS.get(example, 'Execute the command')}")
+        console.print()
+    
+    # Setup and Onboarding
+    console.print(f"\n[bold green]📋 Setup and Onboarding[/bold green]")
+    setup_examples = [
+        "rencom setup"
+    ]
+    
+    for example in setup_examples:
+        console.print(f"  {example}")
+        console.print(f"    {EXAMPLE_DESCRIPTIONS.get(example, 'Execute the command')}")
+        console.print()
+    
+    # Local Development
+    console.print(f"\n[bold green]📋 Local Development[/bold green]")
+    fork_examples = [
+        "rencom fork",
+        "rencom fork health"
+    ]
+    
+    for example in fork_examples:
+        console.print(f"  {example}")
+        console.print(f"    {EXAMPLE_DESCRIPTIONS.get(example, 'Execute the command')}")
+        console.print()
+    
+    # Help and Support
+    console.print(f"\n[bold green]📋 Help and Support[/bold green]")
+    help_examples = [
+        "rencom help",
+        "rencom help --examples",
+        "rencom help --support",
+        "rencom help --command health"
+    ]
+    
+    for example in help_examples:
+        console.print(f"  {example}")
+        console.print(f"    {EXAMPLE_DESCRIPTIONS.get(example, 'Execute the command')}")
+        console.print()
+    
+    # Token Management
+    console.print(f"\n[bold green]📋 Token Management[/bold green]")
+    token_examples = [
+        "rencom token generate",
+        "rencom token list",
+        "rencom token revoke <token-id>"
+    ]
+    
+    for example in token_examples:
+        console.print(f"  {example}")
+        console.print(f"    {EXAMPLE_DESCRIPTIONS.get(example, 'Execute the command')}")
+        console.print()
+    
+    # Advanced Usage
+    console.print(f"\n[bold green]📋 Advanced Usage[/bold green]")
+    advanced_examples = [
+        "rencom --debug health",
+        "rencom --server-url https://api.example.com health",
+        "rencom --verbose setup"
+    ]
+    
+    for example in advanced_examples:
+        console.print(f"  {example}")
+        console.print(f"    {EXAMPLE_DESCRIPTIONS.get(example, 'Execute the command')}")
+        console.print()
+
+
+def get_example_description(example: str) -> str:
+    """Get description for a usage example"""
+    return EXAMPLE_DESCRIPTIONS.get(example, "Execute the command")
 
 
 def display_support_information(compact: bool = False):
-    """Display support contact information and resources"""
+    """Display support contact information"""
     
-    if not compact:
-        console.print("\n")
-        console.print(Panel.fit(
-            "[bold blue]Support & Resources[/bold blue]",
-            border_style="blue"
-        ))
+    if compact:
+        console.print(f"\n[bold green]📞 Support[/bold green]")
+        console.print(f"• GitHub Repo: [link={GITHUB_REPO_URL}]{GITHUB_REPO_URL}[/link]")
+        console.print(f"• Lead Developer: [link={LEAD_DEVELOPER_URL}]{LEAD_DEVELOPER_URL}[/link]")
+        return
     
     console.print(f"\n[bold green]📞 Support Contact[/bold green]")
     console.print("For technical support and questions:")
-    console.print("• Email: [cyan]support@rencom.example.com[/cyan]")
-    console.print("• GitHub Issues: [cyan]https://github.com/your-org/rencom/issues[/cyan]")
-    console.print("• Documentation: [cyan]https://docs.rencom.example.com[/cyan]")
+    console.print(f"• GitHub Repo: [link={GITHUB_REPO_URL}]{GITHUB_REPO_URL}[/link]")
+    console.print(f"• Lead Developer: [link={LEAD_DEVELOPER_URL}]{LEAD_DEVELOPER_URL}[/link]")
     
     console.print(f"\n[bold green]📚 Documentation & Resources[/bold green]")
-    console.print("• [link=https://fastapi.tiangolo.com/]FastAPI Documentation[/link]")
-    console.print("• [link=https://supabase.com/docs]Supabase Documentation[/link]")
-    console.print("• [link=https://click.palletsprojects.com/]Click CLI Framework[/link]")
-    console.print("• [link=https://rich.readthedocs.io/]Rich Terminal Formatting[/link]")
+    console.print(f"• [link={FASTAPI_DOCS_URL}]API Documentation[/link]")
+    console.print(f"• [link={SUPABASE_DOCS_URL}]Supabase Documentation[/link]")
+    console.print(f"• [link={CLI_PYPI_URL}]CLI Information[/link]")
     
     console.print(f"\n[bold green]🔧 Troubleshooting Tips[/bold green]")
-    troubleshooting_tips = [
-        "Server not responding: Check if the server is running with 'rencom health'",
-        "Configuration errors: Run 'rencom setup validate' to check your settings",
-        "Connection timeouts: Increase timeout with '--timeout 60' option",
-        "Permission errors: Ensure you have proper access to configuration files",
-        "Environment issues: Verify your .env file contains all required variables"
-    ]
-    
-    for i, tip in enumerate(troubleshooting_tips, 1):
+    for i, tip in enumerate(TROUBLESHOOTING_TIPS, 1):
         console.print(f"{i}. {tip}")
     
     console.print(f"\n[bold green]🐛 Common Issues[/bold green]")
-    common_issues_table = Table(show_header=True, header_style="bold cyan")
-    common_issues_table.add_column("Issue", style="yellow")
-    common_issues_table.add_column("Solution", style="white")
+    issues_table = Table(show_header=True, header_style="bold cyan")
+    issues_table.add_column("Issue", style="cyan")
+    issues_table.add_column("Solution", style="white")
     
-    common_issues = [
-        ("Command not found", "Ensure CLI is installed: pip install -e ."),
-        ("Server connection failed", "Check server URL and ensure server is running"),
-        ("Invalid configuration", "Run 'rencom setup --interactive' to reconfigure"),
-        ("Permission denied", "Check file permissions for .env and config files"),
-        ("Import errors", "Verify all dependencies are installed: pip install -r requirements.txt")
-    ]
+    for issue, solution in COMMON_ISSUES:
+        issues_table.add_row(issue, solution)
     
-    for issue, solution in common_issues:
-        common_issues_table.add_row(issue, solution)
-    
-    console.print(common_issues_table)
-    
-    if not compact:
-        console.print(f"\n[bold green]ℹ️  Getting More Help[/bold green]")
-        console.print("When reporting issues, please include:")
-        console.print("• Your operating system and Python version")
-        console.print("• The exact command you ran")
-        console.print("• The complete error message")
-        console.print("• Your configuration (without sensitive values)")
-        console.print("\nRun commands with [cyan]--debug[/cyan] flag for detailed error information.")
+    console.print(issues_table)
 
 
 if __name__ == '__main__':
