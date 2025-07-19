@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 """
-CLI Configuration Management
-Handles configuration file loading, validation, and environment variable overrides
+Configuration management for Rencom CLI
+Handles loading and validation of CLI configuration
 """
 
 import os
 import yaml
 from pathlib import Path
-from typing import Dict, Any, Optional
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, field, asdict
+from typing import Optional, Dict, Any
 from pydantic import BaseModel, Field, validator
-import click
+from cli.utils.constants import DEFAULT_SERVER_URL, DEFAULT_TIMEOUT
 
 
 @dataclass
 class CLIConfig:
-    """CLI Configuration data class"""
-    server_url: str = "https://rencom-backend.fly.dev"
-    timeout: int = 30
+    """CLI configuration with validation"""
+    server_url: str = DEFAULT_SERVER_URL
+    timeout: int = DEFAULT_TIMEOUT
     output_format: str = "text"  # text, json
     verbose: bool = False
     debug: bool = False

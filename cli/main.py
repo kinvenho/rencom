@@ -8,7 +8,12 @@ import click
 from typing import Optional
 from dataclasses import dataclass
 
-from config.settings import settings
+# Import constants
+from cli.utils.constants import (
+    CLI_VERSION, CLI_APP_NAME, WELCOME_MESSAGE, ASCII_ART, 
+    ASCII_GRADIENT_START, ASCII_GRADIENT_END
+)
+
 from cli.utils.config import get_config, CLIConfig
 from cli.utils.error_handler import handle_exception, safe_execute
 from cli.commands.health import health
@@ -17,6 +22,7 @@ from cli.commands.help import help
 from cli.commands.token import token
 from cli.commands.config import config
 from cli.commands.completion import completion
+from cli.commands.fork.fork import fork
 
 
 @dataclass
@@ -46,7 +52,7 @@ def show_comprehensive_help(ctx, param, value):
 
 
 @click.group(invoke_without_command=True)
-@click.version_option(version=settings.version, prog_name=settings.app_name)
+@click.version_option(version=CLI_VERSION, prog_name=CLI_APP_NAME)
 @click.option('--server-url', default=None, 
               help='Server URL for API requests (overrides config file)')
 @click.option('--timeout', default=None, type=int,
@@ -106,27 +112,19 @@ cli.add_command(help)
 cli.add_command(token)
 cli.add_command(config)
 cli.add_command(completion)
+cli.add_command(fork)
 
 
 def display_welcome_message():
     """Display welcome message when CLI is run without arguments"""
     from rich.console import Console
+    from rich.panel import Panel
     console = Console()
     click.echo()
-    ascii_art = [
-
-        "░▒▓███████▓▒░░▒▓████████▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓██████████████▓▒░  ",
-        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
-        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
-        "░▒▓███████▓▒░░▒▓██████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
-        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
-        "░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░      ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
-        "░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ",
-
-    ]
+    ascii_art = ASCII_ART
     # Gradient from F22F46 (red) to FFFFFF (white)
-    start_rgb = (242, 47, 70)
-    end_rgb = (255, 255, 255)
+    start_rgb = ASCII_GRADIENT_START
+    end_rgb = ASCII_GRADIENT_END
     steps = len(ascii_art)
     def lerp(a, b, t):
         return int(a + (b - a) * t)
@@ -138,11 +136,16 @@ def display_welcome_message():
         color = f"#{r:02X}{g:02X}{b:02X}"
         console.print(line, style=f"bold {color}")
     click.echo()
-    click.echo(f"{settings.app_name} CLI v{settings.version}")
-    click.echo("Command-line interface for the Rencom Reviews API")
+    click.echo(f"{CLI_APP_NAME} CLI v{CLI_VERSION}")
+    click.echo(WELCOME_MESSAGE)
     click.echo()
-    click.echo("Use 'rencom --help' to see available commands.")
-    click.echo("Use 'rencom <command> --help' for help with specific commands.")
+    console.print(Panel.fit(
+        "[bold green]Get started quickly:[/bold green]\n\n"
+        "• [bold]rencom setup[/bold] — Onboard, create your API token, and start using Rencom right away!\n"
+        "• [bold]rencom fork[/bold] — Advanced: Fork and run the codebase locally, or contribute as a developer.\n\n"
+        "Use [bold]rencom --help[/bold] to see all available commands.",
+        border_style="red"
+    ))
 
 
 if __name__ == '__main__':
