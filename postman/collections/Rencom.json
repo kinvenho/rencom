@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "3adadbfc-dc2d-481c-bda4-a75bbe91640b",
 		"name": "Rencom",
-		"description": "Plug-and-Play Product Reviews API",
+		"description": "## Rencom API\n\nThis is the root workspace for the Rencom E-commerce Reviews API.\n\nBrowse the folders and endpoints to discover how to authenticate, submit and retrieve reviews, manage tokens, and monitor API health.  \nRefer to the API overview for general usage instructions and onboarding tips.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_uid": "43667614-3adadbfc-dc2d-481c-bda4-a75bbe91640b"
 	},
@@ -83,11 +83,9 @@
 													}
 												},
 												"url": {
-													"raw": "{{baseUrl}}/api/v1/tokens",
-													"host": [
-														"{{baseUrl}}"
-													],
+													"raw": "//api/v1/tokens",
 													"path": [
+														"",
 														"api",
 														"v1",
 														"tokens"
@@ -160,7 +158,8 @@
 									]
 								}
 							],
-							"id": "4be9086a-6ead-460d-a5f4-297fe8ff4d7f"
+							"id": "4be9086a-6ead-460d-a5f4-297fe8ff4d7f",
+							"description": "## Token Management\n\nEndpoints for creating and managing API tokens.\n\nAPI tokens are required to authenticate requests to all endpoints (except health checks).  \nUse these endpoints to generate new tokens for your applications or integrations.\n\n**Typical usage:**\n\n- Create a new API token for secure access to the Rencom API.\n    \n- Pass the token in the `Authorization` header as:  \n    `Authorization: Bearer`"
 						},
 						{
 							"name": "reviews",
@@ -215,11 +214,9 @@
 															}
 														],
 														"url": {
-															"raw": "{{baseUrl}}/api/v1/reviews/:review_id",
-															"host": [
-																"{{baseUrl}}"
-															],
+															"raw": "//api/v1/reviews/:review_id",
 															"path": [
+																"",
 																"api",
 																"v1",
 																"reviews",
@@ -290,7 +287,8 @@
 											]
 										}
 									],
-									"id": "c318df39-1dff-48fe-95fd-97cdbae0d283"
+									"id": "c318df39-1dff-48fe-95fd-97cdbae0d283",
+									"description": "## Review by ID\n\nEndpoints for managing individual reviews by their unique ID.\n\n- Delete a specific review from the system\n    \n\nRequires a valid API token for authentication.  \nUse this endpoint to remove reviews as needed for moderation or user requests."
 								},
 								{
 									"name": "Submit Review",
@@ -359,11 +357,9 @@
 													}
 												},
 												"url": {
-													"raw": "{{baseUrl}}/api/v1/reviews",
-													"host": [
-														"{{baseUrl}}"
-													],
+													"raw": "//api/v1/reviews",
 													"path": [
+														"",
 														"api",
 														"v1",
 														"reviews"
@@ -436,7 +432,8 @@
 									]
 								}
 							],
-							"id": "44c2d4b1-92e6-434f-be2b-0419e682ab61"
+							"id": "44c2d4b1-92e6-434f-be2b-0419e682ab61",
+							"description": "## Reviews\n\nEndpoints for submitting, retrieving, and managing product reviews.\n\n- Submit new reviews for products\n    \n- Retrieve paginated and filtered lists of reviews for a product\n    \n- Delete reviews by ID\n    \n\nAll review operations require a valid API token for authentication."
 						},
 						{
 							"name": "products",
@@ -537,11 +534,9 @@
 																	}
 																],
 																"url": {
-																	"raw": "{{baseUrl}}/api/v1/products/:product_external_id/reviews?page=1&page_size=50&rating=eu nostrud&status=eu nostrud&date_from=eu nostrud&date_to=eu nostrud&sort_by=eu nostrud&sort_order=eu nostrud",
-																	"host": [
-																		"{{baseUrl}}"
-																	],
+																	"raw": "//api/v1/products/:product_external_id/reviews?page=1&page_size=50&rating=eu nostrud&status=eu nostrud&date_from=eu nostrud&date_to=eu nostrud&sort_by=eu nostrud&sort_order=eu nostrud",
 																	"path": [
+																		"",
 																		"api",
 																		"v1",
 																		"products",
@@ -834,13 +829,16 @@
 									"id": "e969a240-0b84-40a3-af24-0cc57bc68711"
 								}
 							],
-							"id": "e6d73276-1d82-466e-9f19-ede86ad86902"
+							"id": "e6d73276-1d82-466e-9f19-ede86ad86902",
+							"description": "## Products\n\nEndpoints for accessing product-specific review data.\n\n- Retrieve a summary of reviews for a specific product, including average rating and rating distribution\n    \n\nUse these endpoints to display product ratings and review statistics in your application."
 						}
 					],
-					"id": "0b05590c-8e82-4d14-9366-e36eaf65ce9e"
+					"id": "0b05590c-8e82-4d14-9366-e36eaf65ce9e",
+					"description": "## API Version 1\n\nAll endpoints in this folder are part of version 1 (`/api/v1/`) of the Rencom API.\n\nVersioning ensures backward compatibility and allows for future enhancements without breaking existing integrations.  \nUse these endpoints for all current API operations, including token management, reviews, and product summaries."
 				}
 			],
-			"id": "14d0026c-e9c8-4dcd-875a-57f6eb990db7"
+			"id": "14d0026c-e9c8-4dcd-875a-57f6eb990db7",
+			"description": "## API Root\n\nThis folder contains all primary endpoints for interacting with the Rencom E-commerce Reviews API.\n\nUse these endpoints to manage tokens, submit and retrieve product reviews, and access product review summaries.  \nAll endpoints (except health checks) require authentication via an API token."
 		},
 		{
 			"name": "/",
@@ -908,7 +906,8 @@
 					]
 				}
 			],
-			"id": "d8bcd766-9230-4703-8d23-2bd8592a8b37"
+			"id": "d8bcd766-9230-4703-8d23-2bd8592a8b37",
+			"description": "## Root\n\nThe root endpoint provides a simple health check and API status information.\n\nUse this endpoint to verify that the API is running and accessible."
 		},
 		{
 			"name": "health",
@@ -976,14 +975,42 @@
 					]
 				}
 			],
-			"id": "3dfd8252-962b-4ea5-94af-52a6632f6c01"
+			"id": "3dfd8252-962b-4ea5-94af-52a6632f6c01",
+			"description": "## Health Checks\n\nEndpoints for checking the health and status of the API and its services.\n\n- Basic health check (`/`)\n    \n- Detailed health check (`/health`)\n    \n\nThese endpoints do not require authentication and can be used for monitoring or uptime checks."
+		}
+	],
+	"auth": {
+		"type": "apikey"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f646e327-ed44-4fa4-8787-a56ef12c632c",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "eb576314-4382-487a-8c51-0dbb0f627302",
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	],
 	"variable": [
 		{
-			"id": "f7280906-3f7c-4275-b06a-8a560f100bcb",
+			"id": "d70bc960-7c7e-475f-bb18-eb89a001ba21",
 			"key": "baseUrl",
-			"value": "/"
+			"value": "https://rencom-backend.fly.dev"
 		}
 	]
 }
