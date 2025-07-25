@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     
     # Server
     host: str = "0.0.0.0"
-    port: int = 8000
+    port: int = Field(default=8000, env="PORT")
     
     # Supabase
     supabase_url: str = Field(..., env="SUPABASE_URL")
